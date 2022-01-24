@@ -55,22 +55,19 @@ services:
   sf-node:
     image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
-    ports:
-        - "9944:9944"
+    network_mode: 'host'
     command: ["--dev", "--pruning", "archive", "--tmp", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
   sf-status:
     image: 'sugarfunge.azurecr.io/status:latest'
     restart: always
-    ports:
-        - "8000:8000"
+    network_mode: 'host'
     environment:
         PORT: ${PORT}
         REACT_APP_PROVIDER_SOCKET: ${REACT_APP_PROVIDER_SOCKET}
   sf-explorer:
     image: 'sugarfunge.azurecr.io/explorer:latest'
     restart: always
-    ports:
-      - "3000:80"
+    network_mode: 'host'
     environment:
       WS_URL: ${WS_URL}
   ipfs:
@@ -85,8 +82,7 @@ services:
   sf-api:
     image: 'sugarfunge.azurecr.io/api:latest'
     restart: always
-    ports:
-      - "4000:4000"
-    command: ["-l", "http://0.0.0.0:4000", "-s", "ws://sf-node:9944"]
+    network_mode: 'host'
+    command: ["-l", "http://0.0.0.0:4000", "-s", "ws://127.0.0.1:9944"]
 volumes:
   postgres_data:
