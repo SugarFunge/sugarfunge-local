@@ -33,7 +33,7 @@ $ docker-compose up -d
 1. [Sugarfunge Node](https://github.com/SugarFunge/sugarfunge-node): Local blockchain node (Accessible at `ws://localhost:9944`) 
 2. [Sugarfunge API](https://github.com/SugarFunge/sugarfunge-api): Blockchain API (API available at http://localhost:4000)
 3. [Sugarfunge Status](https://github.com/SugarFunge/sf-front-end): Minimal blockchain information ([Click here to access](http://localhost:8000))
-4. [Sugarfunge Explorer](https://github.com/SugarFunge/sugarfunge-explorer): polkadot-js blockchain explorer ([Click here to access](http://localhost:3000))
+4. [Sugarfunge Explorer](https://github.com/SugarFunge/sugarfunge-explorer): polkadot-js blockchain explorer ([Click here to access](http://localhost:80))
 5. [PostgreSQL](https://www.postgresql.org): Powerful, open source object-relational database system (Accessible at http://localhost:5432) (Tip: Change the port number or remove the port section in the docker-compose file if you already have a postgres instance running to avoid port conflicts)
 6. [Keycloak](https://www.keycloak.org): Open source identity and access management solution ([Click here to access](http://localhost:8080)) (Tip: The username and password is `keycloak`)
 7. [Hasura GraphQL](https://hasura.io): Makes your data instantly accessible over a real-time GraphQL API ([Click here to access](http://localhost:8079)) (Tip: The access key is `sugarfunge`)
