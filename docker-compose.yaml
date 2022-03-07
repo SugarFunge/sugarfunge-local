@@ -38,25 +38,21 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
       KEYCLOAK_USER: ${KEYCLOAK_USER}
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
-  hasura:
-    image: 'hasura/graphql-engine:v2.1.1'
-    ports:
-      - '8079:8080'
-    depends_on:
-      - keycloak
-    restart: always
-    environment:
-      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_DEV_MODE: "false"
-      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: "startup, http-log, webhook-log, websocket-log, query-log"
-      HASURA_GRAPHQL_JWT_SECRET: ${HASURA_GRAPHQL_JWT_SECRET}
-  sf-node:
+  sf-node-alice:
     image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
+    network_mode: "host"
+    command: ["--chain=local", "--alice", "--base-path=~/tmp/a" ,"--port=30334", "--ws-port", "9944", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
+  sf-node-bob:
+    image: 'sugarfunge.azurecr.io/node:latest'
+    restart: always
+    network_mode: "host"
+    command: ["--bob", "--base-path=~/tmp/a" ,"--port=30335", "--ws-port", "9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
+  sf-api:
+    image: 'sugarfunge.azurecr.io/api:latest'
+    restart: always
     network_mode: 'host'
-    command: ["--dev", "--pruning", "archive", "--tmp", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
+    command: ["-l", "http://0.0.0.0:4000", "-s", "ws://127.0.0.1:9944"]
   sf-status:
     image: 'sugarfunge.azurecr.io/status:latest'
     restart: always
@@ -79,10 +75,5 @@ services:
       - "5001:5001"
     volumes:
       - ./ipfs:/data/ipfs
-  sf-api:
-    image: 'sugarfunge.azurecr.io/api:latest'
-    restart: always
-    network_mode: 'host'
-    command: ["-l", "http://0.0.0.0:4000", "-s", "ws://127.0.0.1:9944"]
 volumes:
   postgres_data:

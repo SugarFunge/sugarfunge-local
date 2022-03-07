@@ -36,8 +36,7 @@ $ docker-compose up -d
 4. [Sugarfunge Explorer](https://github.com/SugarFunge/sugarfunge-explorer): polkadot-js blockchain explorer ([Click here to access](http://localhost:80))
 5. [PostgreSQL](https://www.postgresql.org): Powerful, open source object-relational database system (Accessible at http://localhost:5432) (Tip: Change the port number or remove the port section in the docker-compose file if you already have a postgres instance running to avoid port conflicts)
 6. [Keycloak](https://www.keycloak.org): Open source identity and access management solution ([Click here to access](http://localhost:8080)) (Tip: The username and password is `keycloak`)
-7. [Hasura GraphQL](https://hasura.io): Makes your data instantly accessible over a real-time GraphQL API ([Click here to access](http://localhost:8079)) (Tip: The access key is `sugarfunge`)
-8. [IPFS](https://ipfs.io): Distributed storage ([Click here to access the WebUI](http://localhost:5001/webui)) (API available at http://localhost:8001) 
+7. [IPFS](https://ipfs.io): Distributed storage ([Click here to access the WebUI](http://localhost:5001/webui)) (API available at http://localhost:8001) 
 
 - If you want update or stop the images
 ```bash
@@ -68,10 +67,6 @@ $ docker-compose down --volumes
 | DB_PASSWORD                 | Keycloak postgres database password     |
 | KEYCLOAK_USER               | Keycloak default username               |
 | KEYCLOAK_PASSWORD           | Keycloak default password               |
-| HASURA_GRAPHQL_DATABASE_URL | Postgres Database Url                   |
-| HASURA_GRAPHQL_ADMIN_SECRET | Hasura GraphQL Admin Secret             |
-| KEYCLOAK_PUBLIC_KEY         | Keycloak RS256 public key               |
-| HASURA_GRAPHQL_JWT_SECRET   | JWT secret key                          |
 | PORT                        | Port (sf-status)                        |
 | REACT_APP_PROVIDER_SOCKET   | Node WebSocket url (sf-status)          |
 | WS_URL                      | Node WebSocket url (sf-explorer)        |
