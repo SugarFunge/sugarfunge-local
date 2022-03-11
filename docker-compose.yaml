@@ -1,22 +1,22 @@
 version: '3.6'
 services:
   postgres:
-    image: postgres:13
+    image: 'postgres:13'
     restart: always
     environment: 
-        - DATABASE_HOST=${DATABASE_HOST}
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-        - POSTGRES_DB=${POSTGRES_DB} 
+      - DATABASE_HOST=${DATABASE_HOST}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB} 
     ports: 
-        - "5432:5432"
+      - "5432:5432"
     volumes: 
-        - postgres_data:/var/lib/postgresql/data 
-        - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+      - postgres_data:/var/lib/postgresql/data 
+      - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
   keycloak:
-    image: quay.io/keycloak/keycloak:15.0.2
+    image: 'quay.io/keycloak/keycloak:15.0.2'
     ports:
-      - 8080:8080
+      - "8080:8080"
     restart: always
     command:
       - '-Dkeycloak.profile.feature.upload_scripts=enabled'
@@ -41,13 +41,15 @@ services:
   sf-node-alice:
     image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
-    network_mode: "host"
+    ports:
+      - "9944:9944"
     command: ["--chain=local", "--alice", "--base-path=~/tmp/a" ,"--port=30334", "--ws-port", "9944", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
   sf-node-bob:
     image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
-    network_mode: "host"
-    command: ["--bob", "--base-path=~/tmp/a" ,"--port=30335", "--ws-port", "9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
+    ports:
+      - "9945:9945"
+    command: ["--bob", "--base-path=~/tmp/a" ,"--port=30335", "--ws-port", "9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/dns/sf-node-alice/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
   sf-api:
     image: 'sugarfunge.azurecr.io/api:latest'
     restart: always
@@ -67,7 +69,7 @@ services:
     environment:
       WS_URL: ${WS_URL}
   ipfs:
-    image: ipfs/go-ipfs:master-2021-11-17-0c2f9d5
+    image: 'ipfs/go-ipfs:master-2021-11-17-0c2f9d5'
     restart: always
     ports:
       - "4001:4001"
