@@ -1,0 +1,33 @@
+table:
+  schema: sf
+  name: asset
+object_relationships:
+  - name: asset_metadata
+    using:
+      foreign_key_constraint_on:
+        column: asset_id
+        table:
+          schema: sf
+          name: asset_metadata
+  - name: asset_nft
+    using:
+      foreign_key_constraint_on:
+        column: asset_id
+        table:
+          schema: sf
+          name: asset_nft
+array_relationships:
+  - name: account_assets
+    using:
+      foreign_key_constraint_on:
+        column: asset_id
+        table:
+          schema: sf
+          name: account_asset
+  - name: asset_classes
+    using:
+      foreign_key_constraint_on:
+        column: asset_id
+        table:
+          schema: sf
+          name: asset_class

@@ -1,0 +1,234 @@
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Accounts
+  url: accounts
+  methods:
+    - GET
+  name: Accounts
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Account Create
+  url: accounts
+  methods:
+    - POST
+  name: Account Create
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Account assets
+  url: accounts/assets
+  methods:
+    - GET
+  name: Account assets
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Asset Create
+  url: assets
+  methods:
+    - POST
+  name: Asset Create
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Asset Get
+  url: assets
+  methods:
+    - GET
+  name: Asset Get
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Asset by Chain
+  url: assets/chain
+  methods:
+    - GET
+  name: Asset by Chain
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Asset by ID
+  url: assets/id
+  methods:
+    - GET
+  name: Asset by ID
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Bundle Get
+  url: bundles
+  methods:
+    - GET
+  name: Bundle Get
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Bundle Register
+  url: bundles
+  methods:
+    - POST
+  name: Bundle Register
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Bundle by Chain
+  url: bundles/chain
+  methods:
+    - GET
+  name: Bundle by Chain
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Bundle by ID
+  url: bundles/id
+  methods:
+    - GET
+  name: Bundle by ID
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Class Create
+  url: classes
+  methods:
+    - POST
+  name: Class Create
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Classes
+  url: classes
+  methods:
+    - GET
+  name: Classes
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Class Assets
+  url: classes/assets
+  methods:
+    - GET
+  name: Class Assets
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Currency Create
+  url: currencies
+  methods:
+    - POST
+  name: Currency Create
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Currency Get
+  url: currencies
+  methods:
+    - GET
+  name: Currency Get
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Currency Update
+  url: currencies/id
+  methods:
+    - PATCH
+  name: Currency Update
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Escrow Create
+  url: escrows
+  methods:
+    - POST
+  name: Escrow Create
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Escrow Get
+  url: escrows
+  methods:
+    - GET
+  name: Escrow Get
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Escrow Owners
+  url: escrows/owners
+  methods:
+    - POST
+  name: Escrow Owners
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Escrow Register
+  url: escrows/register
+  methods:
+    - POST
+  name: Escrow Register
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Market Get
+  url: markets
+  methods:
+    - GET
+  name: Market Get
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Market Create
+  url: markets
+  methods:
+    - POST
+  name: Market Create
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Market by Chain
+  url: markets/chain
+  methods:
+    - GET
+  name: Market by Chain
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Market by ID
+  url: markets/id
+  methods:
+    - GET
+  name: Market by ID
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Market Rate by ID
+  url: markets/rates/id
+  methods:
+    - GET
+  name: Market Rate by ID
+  comment: null

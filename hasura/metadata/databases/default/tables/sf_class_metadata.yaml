@@ -1,0 +1,7 @@
+table:
+  schema: sf
+  name: class_metadata
+object_relationships:
+  - name: class
+    using:
+      foreign_key_constraint_on: class_id

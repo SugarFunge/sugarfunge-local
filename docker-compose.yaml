@@ -39,12 +39,16 @@ services:
       KEYCLOAK_USER: ${KEYCLOAK_USER}
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
   graphql-engine:
-    image: 'hasura/graphql-engine:v2.6.1'
+    image: 'hasura/graphql-engine:v2.6.1.cli-migrations-v3'
     ports:
       - '8080:8080'
     depends_on:
       - postgres
     restart: always
+    volumes:
+      - ./hasura/migrations:/hasura-migrations
+      - ./hasura/metadata:/hasura-metadata
+      - ./hasura/seeds:/hasura-seeds
     environment:
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
       HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
@@ -92,7 +96,7 @@ services:
   appsmith:
     image: index.docker.io/appsmith/appsmith-ce
     ports:
-      - "81:80"
+      - "7000:80"
       - "443:443"
       - "9001:9001"
     volumes:
