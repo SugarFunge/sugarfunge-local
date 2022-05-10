@@ -31,38 +31,14 @@ docker login -u (username) -p (password) sugarfunge.azurecr.io
 docker-compose up -d
 ```
 
-- Check the postgres container ID 
-```
-docker ps
-```
-
-- Copy the hasura.sql file into the docker container
-```
-docker cp hasura.sql <container-id>:/.
-```
-
-- Access the postgres docker container
-```
-docker exec -it <container-id> sh
-```
-
-- Set the database structure
-```
-psql -U hasura -d hasura < hasura.sql
-```
-
-- Access [Hasura](http://localhost:8080), data section and hit 'Track all' button for the tables/views and foreign-key relationships
-
-- Access Hasura's settings in the metadata actions section and import the metadata json file
-
 - Host the sf-API with ngrok for it to be accessible from appsmith (this step must be done everytime you start the containers): 
 ```
 ngrok http http://localhost:4000
 ```
 
-- Access [Appsmith](http://localhost:81) and create a local account (You can skip the tutorial)
+- Access [Appsmith](http://localhost:7000) and create a local account (You can skip the tutorial)
 
-- On the Appsmith main menu, import the app using the 'Admin Panel' json file
+- On the Appsmith main menu, import the app using a fork of the following ([git repo](https://github.com/SugarFunge/sugarfunge-admin-panel)) and follow the steps provided by appsmith.
 
 - Update the 'SugarFunge' datasource using the url given by ngrok (this step must be done everytime you start the containers)
 
@@ -71,7 +47,7 @@ ngrok http http://localhost:4000
 http://graphql-engine:8080
 ```
 
-- Click on the Deploy button at top right to try the app out.
+- Go to the main menu and launch the app to start using the admin panel.
 
 
 - The following services will be available after docker-compose is running
@@ -84,7 +60,7 @@ http://graphql-engine:8080
 6. [Hasura](https://hasura.io/): Instant GraphQL & REST APIs on new & existing data sources. ([Click here to access](http://localhost:8080))
 7. [Keycloak](https://www.keycloak.org): Open source identity and access management solution ([Click here to access](http://localhost:8081)) (Tip: The username and password is `keycloak`)
 8. [IPFS](https://ipfs.io): Distributed storage ([Click here to access the WebUI](http://localhost:5001/webui)) (API available at http://localhost:8001) 
-9. [AppSmith](https://www.appsmith.com/): Powerful open source framework to build internal tools ([Click here to access](http://localhost:81))
+9. [AppSmith](https://www.appsmith.com/): Powerful open source framework to build internal tools ([Click here to access](http://localhost:7000))
 
 - If you want update or stop the images
 ```bash
