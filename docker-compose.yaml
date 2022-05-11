@@ -104,6 +104,8 @@ services:
     labels:
       com.centurylinklabs.watchtower.enable: "true"
     restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
   auto_update:
     image: containrrr/watchtower:latest-dev
     volumes:

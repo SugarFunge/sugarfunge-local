@@ -6,8 +6,6 @@
 
 - Install [Docker-Compose](https://docs.docker.com/compose/install)
 
-- Install [Ngrok](https://ngrok.com/download)
-
 ## Usage
 
 - Clone the project
@@ -30,17 +28,14 @@ docker login -u (username) -p (password) sugarfunge.azurecr.io
 ```
 docker-compose up -d
 ```
-
-- Host the sf-API with ngrok for it to be accessible from appsmith (this step must be done everytime you start the containers): 
-```
-ngrok http http://localhost:4000
-```
-
 - Access [Appsmith](http://localhost:7000) and create a local account (You can skip the tutorial)
 
 - On the Appsmith main menu, import the app using a fork of the following ([git repo](https://github.com/SugarFunge/sugarfunge-admin-panel)) and follow the steps provided by appsmith.
 
-- Update the 'SugarFunge' datasource using the url given by ngrok (this step must be done everytime you start the containers)
+- Update the 'SugarFunge' datasource using:
+```
+http://host.docker.internal:4000
+```
 
 - Update the 'Hasura' datasource using:
 ```
