@@ -1,0 +1,11 @@
+table:
+  schema: sf
+  name: market
+array_relationships:
+  - name: market_rates
+    using:
+      foreign_key_constraint_on:
+        column: market_id
+        table:
+          schema: sf
+          name: market_rate

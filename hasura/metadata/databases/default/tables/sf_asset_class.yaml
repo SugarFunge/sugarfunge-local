@@ -1,0 +1,10 @@
+table:
+  schema: sf
+  name: asset_class
+object_relationships:
+  - name: asset
+    using:
+      foreign_key_constraint_on: asset_id
+  - name: class
+    using:
+      foreign_key_constraint_on: class_id
