@@ -362,3 +362,12 @@
           		chain_id
           	}
           }
+      - name: Escrow Get Class
+        query: |
+          query get_escrow_class {
+          	sf_escrow_class {
+          		id
+          		class_id
+          		metadata
+          	}
+          }

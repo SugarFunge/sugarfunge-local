@@ -172,6 +172,15 @@
 - definition:
     query:
       collection_name: allowed-queries
+      query_name: Escrow Get Class
+  url: escrows/classes
+  methods:
+    - GET
+  name: Escrow Get Class
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
       query_name: Escrow Owners
   url: escrows/owners
   methods:
