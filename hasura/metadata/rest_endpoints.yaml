@@ -154,20 +154,20 @@
 - definition:
     query:
       collection_name: allowed-queries
-      query_name: Escrow Create
-  url: escrows
-  methods:
-    - POST
-  name: Escrow Create
-  comment: null
-- definition:
-    query:
-      collection_name: allowed-queries
       query_name: Escrow Get
   url: escrows
   methods:
     - GET
   name: Escrow Get
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
+      query_name: Escrow Create
+  url: escrows
+  methods:
+    - POST
+  name: Escrow Create
   comment: null
 - definition:
     query:

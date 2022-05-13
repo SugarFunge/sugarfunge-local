@@ -278,52 +278,6 @@
           		id
           	}
           }
-      - name: Escrow Create
-        query: |
-          mutation create_escrow ($id: uuid!, $asset_id: Int!, $chain_id: String!) {
-          	update_sf_escrow(where: {id:{_eq:$id}}, _set: {asset_id:$asset_id,chain_id:$chain_id}) {
-          		returning {
-          			class_id
-          			asset_id
-          			id
-          			metadata
-          			chain_id
-          		}
-          	}
-          }
-      - name: Escrow Get
-        query: |
-          query get_escrow {
-          	sf_escrow {
-          		id
-          		chain_id
-          		class_id
-          		metadata
-          		escrow_shares {
-          			owner
-          			share
-          		}
-          	}
-          }
-      - name: Escrow Register
-        query: |
-          mutation register_escrow ($metadata: jsonb!, $class_id: Int!) {
-          	insert_sf_escrow_one(object: {metadata:$metadata,class_id:$class_id}) {
-          		id
-          		metadata
-          	}
-          }
-      - name: Escrow Owners
-        query: |
-          mutation escrow_owners ($owners: [sf_escrow_share_insert_input!]!) {
-          	insert_sf_escrow_share(objects: $owners) {
-          		returning {
-          			escrow_id
-          			owner
-          			share
-          		}
-          	}
-          }
       - name: Market by Chain
         query: |
           query get_market_by_chain ($market_chain_id: Int!, $market_rate_chain_id: Int!) {
@@ -358,5 +312,53 @@
           			id
           			chain_id
           		}
+          	}
+          }
+      - name: Escrow Register
+        query: |
+          mutation register_escrow ($metadata: jsonb!, $class_id: Int!) {
+          	insert_sf_escrow_class_one(object: {metadata:$metadata,class_id:$class_id}) {
+          		id
+          		class_id
+          		metadata
+          	}
+          }
+      - name: Escrow Get
+        query: |
+          query get_escrow {
+          	sf_escrow {
+          		id
+          		chain_id
+          		asset_id
+          		escrow_shares {
+          			owner
+          			share
+          		}
+          		escrow_class {
+          			id
+          			class_id
+          			metadata
+          		}
+          	}
+          }
+      - name: Escrow Owners
+        query: |
+          mutation escrow_owners ($owners: [sf_escrow_share_insert_input!]!) {
+          	insert_sf_escrow_share(objects: $owners) {
+          		returning {
+          			escrow_id
+          			owner
+          			share
+          		}
+          	}
+          }
+      - name: Escrow Create
+        query: |
+          mutation create_escrow ($asset_id: Int!, $chain_id: String!, $escrow_class_id: uuid!) {
+          	insert_sf_escrow_one(object: {asset_id:$asset_id,chain_id:$chain_id,escrow_class_id:$escrow_class_id}) {
+          		id
+          		escrow_class_id
+          		asset_id
+          		chain_id
           	}
           }

@@ -1,6 +1,10 @@
 table:
   schema: sf
   name: escrow
+object_relationships:
+  - name: escrow_class
+    using:
+      foreign_key_constraint_on: escrow_class_id
 array_relationships:
   - name: escrow_shares
     using:
