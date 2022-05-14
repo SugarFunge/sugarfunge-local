@@ -154,6 +154,15 @@
 - definition:
     query:
       collection_name: allowed-queries
+      query_name: Escrow Get
+  url: escrows
+  methods:
+    - GET
+  name: Escrow Get
+  comment: null
+- definition:
+    query:
+      collection_name: allowed-queries
       query_name: Escrow Create
   url: escrows
   methods:
@@ -163,11 +172,11 @@
 - definition:
     query:
       collection_name: allowed-queries
-      query_name: Escrow Get
-  url: escrows
+      query_name: Escrow Get Class
+  url: escrows/classes
   methods:
     - GET
-  name: Escrow Get
+  name: Escrow Get Class
   comment: null
 - definition:
     query:

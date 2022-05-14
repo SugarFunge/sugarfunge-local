@@ -12,6 +12,7 @@
 - "!include sf_class_profile.yaml"
 - "!include sf_currency.yaml"
 - "!include sf_escrow.yaml"
+- "!include sf_escrow_class.yaml"
 - "!include sf_escrow_share.yaml"
 - "!include sf_market.yaml"
 - "!include sf_market_rate.yaml"
