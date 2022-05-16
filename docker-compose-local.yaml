@@ -1,0 +1,131 @@
+version: '3.6'
+services:
+  postgres:
+    image: postgres:13
+    restart: always
+    environment: 
+        - DATABASE_HOST=${DATABASE_HOST}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=${POSTGRES_DB} 
+    ports:
+        - "5432:5432"
+    volumes: 
+        - postgres_data:/var/lib/postgresql/data 
+        - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+  keycloak:
+    image: 'quay.io/keycloak/keycloak:15.0.2'
+    ports:
+      - "8081:8080"
+    restart: always
+    command:
+      - '-Dkeycloak.profile.feature.upload_scripts=enabled'
+      - '-Dkeycloak.migration.action=import'
+      - '-Dkeycloak.migration.provider=singleFile'
+      - '-Dkeycloak.migration.file=/tmp/master-realm.json'
+      - '-Dkeycloak.migration.strategy=OVERWRITE_EXISTING'
+    volumes:
+      - type: bind
+        source: './keycloak/master-realm.json'
+        target: '/tmp/master-realm.json'
+    environment:
+      PROXY_ADDRESS_FORWARDING: ${PROXY_ADDRESS_FORWARDING}
+      DB_VENDOR: ${DB_VENDOR}
+      DB_ADDR: ${DB_ADDR}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_SCHEMA: ${DB_SCHEMA}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      KEYCLOAK_USER: ${KEYCLOAK_USER}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+  graphql-engine:
+    image: 'hasura/graphql-engine:v2.6.0.cli-migrations-v3'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+    restart: always
+    volumes:
+      - ./hasura/migrations:/hasura-migrations
+      - ./hasura/metadata:/hasura-metadata
+      - ./hasura/seeds:/hasura-seeds
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
+      HASURA_GRAPHQL_DEV_MODE: "false"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: "startup, http-log, webhook-log, websocket-log, query-log"
+      ACTION_BASE_URL: "http://127.0.0.1:3000"
+  sf-node-alice:
+    image: sugarfunge-node:latest
+    build:
+      context: https://github.com/SugarFunge/sugarfunge-node.git#main
+      dockerfile: docker/Dockerfile
+    restart: always
+    network_mode: "host"
+    command: ["--chain=local", "--alice", "--base-path=~/tmp/a" ,"--port=30334", "--ws-port", "9944", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
+  sf-node-bob:
+    image: sugarfunge-node:latest
+    build:
+      context: https://github.com/SugarFunge/sugarfunge-node.git#main
+      dockerfile: docker/Dockerfile
+    restart: always
+    network_mode: "host"
+    command: ["--bob", "--base-path=~/tmp/a" ,"--port=30335", "--ws-port", "9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
+  sf-api:
+    image: 'sugarfunge-api:latest'
+    build:
+      context: https://github.com/SugarFunge/sugarfunge-api.git#main
+      dockerfile: docker/Dockerfile
+    restart: always
+    network_mode: 'host'
+    command: ["-l", "http://0.0.0.0:4000", "-s", "ws://127.0.0.1:9944"]
+  sf-status:
+    image: 'sugarfunge-status:latest'
+    build:
+      context: https://github.com/SugarFunge/sf-front-end.git#master
+      dockerfile: docker/Dockerfile
+    restart: always
+    network_mode: 'host'
+    environment:
+        PORT: ${PORT}
+        REACT_APP_PROVIDER_SOCKET: ${REACT_APP_PROVIDER_SOCKET}
+  sf-explorer:
+    image: 'sugarfunge-explorer:latest'
+    build:
+      context: https://github.com/SugarFunge/sugarfunge-explorer.git#master
+      dockerfile: docker/Dockerfile
+    restart: always
+    network_mode: 'host'
+    environment:
+      WS_URL: ${WS_URL}
+  ipfs:
+    image: 'ipfs/go-ipfs:master-2021-11-17-0c2f9d5'
+    restart: always
+    ports:
+      - "4001:4001"
+      - "8001:8080"
+      - "5001:5001"
+    volumes:
+      - ./ipfs:/data/ipfs
+  appsmith:
+    image: index.docker.io/appsmith/appsmith-ce
+    ports:
+      - "7000:80"
+      - "443:443"
+      - "9001:9001"
+    volumes:
+      - ./stacks:/appsmith-stacks
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    restart: unless-stopped
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+  auto_update:
+    image: containrrr/watchtower:latest-dev
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --schedule "0 0 * ? * *" --label-enable --cleanup
+    restart: unless-stopped
+volumes:
+  postgres_data:
