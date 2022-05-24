@@ -1,0 +1,66 @@
+type Mutation {
+  erc1155_batch_transfer(
+    from: String!
+    to: String!
+    amounts: [Int!]
+    ids: [Int!]
+    data: [ERC1155TokenMetadata!]
+  ): ERC1155TransactionOutput
+}
+
+type Mutation {
+  erc1155_batch_wrap(
+    from: String!
+    amounts: [Int!]
+    ids: [Int!]
+    data: [ERC1155TokenMetadata!]
+  ): ERC1155TransactionOutput
+}
+
+type Mutation {
+  erc1155_mint(
+    account: String!
+    amount: Int!
+    id: Int!
+    data: ERC1155TokenMetadata!
+  ): ERC1155TransactionOutput
+}
+
+type Mutation {
+  erc1155_transfer(
+    from: String!
+    to: String!
+    amount: Int!
+    id: Int!
+    data: ERC1155TokenMetadata!
+  ): ERC1155TransactionOutput
+}
+
+type Mutation {
+  erc1155_unwrap(
+    id: Int!
+    amount: Int!
+    recipient_address: String!
+    data: ERC1155TokenMetadata!
+  ): ERC1155TransactionOutput
+}
+
+type Mutation {
+  erc1155_wrap(
+    from: String!
+    amount: Int!
+    id: Int!
+    data: ERC1155TokenMetadata!
+  ): ERC1155TransactionOutput
+}
+
+input ERC1155TokenMetadata {
+  name: String!
+  symbol: String!
+  decimals: Int!
+}
+
+type ERC1155TransactionOutput {
+  tx: String!
+}
+

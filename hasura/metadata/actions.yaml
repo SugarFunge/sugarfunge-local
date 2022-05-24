@@ -1,6 +1,134 @@
-actions: []
+actions:
+  - name: erc1155_batch_transfer
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_RESOLVER_API_ENDPOINT}}/batch_transfer_nft'
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "from": {{$body.input.from}},
+              "to": {{$body.input.to}},
+              "amounts": {{$body.input.amounts}},
+              "ids": {{$body.input.ids}},
+              "data": {{$body.input.data}}
+            }
+        method: POST
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: erc1155_batch_wrap
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_RESOLVER_API_ENDPOINT}}/batch_wrap_1155'
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "from": {{$body.input.from}},
+              "amounts": {{$body.input.amounts}},
+              "ids": {{$body.input.ids}},
+              "data": {{$body.input.data}}
+            }
+        method: POST
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: erc1155_mint
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_RESOLVER_API_ENDPOINT}}/mint_nft'
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "account": {{$body.input.account}},
+              "amount": {{$body.input.amount}},
+              "id": {{$body.input.id}},
+              "data": {
+                "name": {{$body.input.data.name}},
+                "symbol": {{$body.input.data.symbol}},
+                "decimals": {{$body.input.data.decimals}}
+              }
+            }
+        method: POST
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: erc1155_transfer
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_RESOLVER_API_ENDPOINT}}/transfer_nft'
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "from": {{$body.input.from}},
+              "to": {{$body.input.to}},
+              "amount": {{$body.input.amount}},
+              "id": {{$body.input.id}},
+              "data": {
+                "name": {{$body.input.data.name}},
+                "symbol": {{$body.input.data.symbol}},
+                "decimals": {{$body.input.data.decimals}}
+              }
+            }
+        method: POST
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: erc1155_unwrap
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_RESOLVER_API_ENDPOINT}}/unwrap_1155'
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "id": {{$body.input.id}},
+              "amount": {{$body.input.amount}},
+              "recipient_address": {{$body.input.recipient_address}},
+              "data": {
+                "name": {{$body.input.data.name}},
+                "symbol": {{$body.input.data.symbol}},
+                "decimals": {{$body.input.data.decimals}}
+              }
+            }
+        method: POST
+        version: 2
+        query_params: {}
+        template_engine: Kriti
+  - name: erc1155_wrap
+    definition:
+      kind: synchronous
+      handler: '{{ACTION_RESOLVER_API_ENDPOINT}}/wrap_1155'
+      request_transform:
+        body:
+          action: transform
+          template: |-
+            {
+              "from": {{$body.input.from}},
+              "amount": {{$body.input.amount}},
+              "id": {{$body.input.id}},
+              "data": {
+                "name": {{$body.input.data.name}},
+                "symbol": {{$body.input.data.symbol}},
+                "decimals": {{$body.input.data.decimals}}
+              }
+            }
+        method: POST
+        version: 2
+        query_params: {}
+        template_engine: Kriti
 custom_types:
   enums: []
-  input_objects: []
-  objects: []
+  input_objects:
+    - name: ERC1155TokenMetadata
+  objects:
+    - name: ERC1155TransactionOutput
   scalars: []

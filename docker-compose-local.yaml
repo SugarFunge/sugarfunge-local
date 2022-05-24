@@ -51,11 +51,12 @@ services:
       - ./hasura/seeds:/hasura-seeds
     environment:
       HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_DEV_MODE: "false"
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
+      HASURA_GRAPHQL_DEV_MODE: "true"
       HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: "startup, http-log, webhook-log, websocket-log, query-log"
       ACTION_BASE_URL: "http://127.0.0.1:3000"
+      ACTION_RESOLVER_API_ENDPOINT: "http://172.17.0.1:9000"
   sf-node-alice:
     image: sugarfunge-node:latest
     build:

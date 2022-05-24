@@ -91,3 +91,42 @@ $ docker-compose down --volumes
 | WS_URL                      | Node WebSocket url (sf-explorer)        |
 | HASURA_GRAPHQL_DATABASE_URL | Postgres database url                   |
 | HASURA_GRAPHQL_ADMIN_SECRET | Hasura admin secret Key                 |
+
+## Local Configuration
+
+It's possible to build the images locally if you don't have access or don't want to use the azure pre-built containers, start docker compose using the following command to get started:
+
+```bash
+docker compose -f docker-compose-local.yaml up -d
+```
+
+> NOTE: The sugarfunge-node code is pulled directly from github, using the main branch, change to a different one if needed on `docker-compose-local.yaml` file.
+
+## Sugarfunge ERC1155 Integration
+
+We have 6 (six) graphql actions on hasura that maps directly to the `sugarfunge-integration` api, these actions aim to act as a bridge for asset conversion between the sugarfunge and ethereum networks.
+
+To get these actions running you will need to setup the sugarfunge-integration repository on your local machine and configure the API address inside the docker-compose environment settings for graphql-engine:
+
+```yaml
+graphql-engine:
+    image: 'hasura/graphql-engine:v2.6.0.cli-migrations-v3'
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+    restart: always
+    volumes:
+      - ./hasura/migrations:/hasura-migrations
+      - ./hasura/metadata:/hasura-metadata
+      - ./hasura/seeds:/hasura-seeds
+    environment:
+      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
+      HASURA_GRAPHQL_ENABLE_CONSOLE: "false"
+      HASURA_GRAPHQL_DEV_MODE: "true"
+      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
+      HASURA_GRAPHQL_ENABLED_LOG_TYPES: "startup, http-log, webhook-log, websocket-log, query-log"
+      ACTION_BASE_URL: "http://127.0.0.1:3000"
+      # Replace this environment variable with the sugarfunge-integration api address
+      ACTION_RESOLVER_API_ENDPOINT: "http://172.17.0.1:9000"
+```
