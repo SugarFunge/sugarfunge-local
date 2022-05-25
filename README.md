@@ -41,6 +41,10 @@ http://host.docker.internal:4000
 ```
 http://graphql-engine:8080
 ```
+- And also add the following Header in the 'Hasura' datasource:
+```
+Key: x-hasura-admin-secret ; Value: <your-secret-value>
+```
 
 - Go to the main menu and launch the app to start using the admin panel.
 
