@@ -57,15 +57,21 @@ services:
       HASURA_GRAPHQL_ENABLED_LOG_TYPES: "startup, http-log, webhook-log, websocket-log, query-log"
       ACTION_BASE_URL: "http://127.0.0.1:3000"
   sf-node-alice:
-    image: 'sugarfunge.azurecr.io/node:0ca6b8417a90b07cdf4967f50d663d4e2c24c589'
+    image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
     network_mode: "host"
-    command: ["--chain=local", "--alice", "--base-path=~/tmp/a" ,"--port=30334", "--ws-port", "9944", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
+    command: ["--alice", "--port=30334", "--ws-port", "9944", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
+    # Uncomment to add data persistency
+    # volumes:
+    #   - ./rocksdb/alice:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
   sf-node-bob:
-    image: 'sugarfunge.azurecr.io/node:0ca6b8417a90b07cdf4967f50d663d4e2c24c589'
+    image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
     network_mode: "host"
-    command: ["--bob", "--base-path=~/tmp/a" ,"--port=30335", "--ws-port", "9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
+    command: ["--bob", "--port=30335", "--ws-port", "9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
+    # Uncomment to add data persistency
+    # volumes:
+    #   - ./rocksdb/bob:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
   sf-api:
     image: 'sugarfunge.azurecr.io/api:latest'
     restart: always
