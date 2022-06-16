@@ -14,30 +14,25 @@ services:
         - postgres_data:/var/lib/postgresql/data 
         - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
   keycloak:
-    image: 'quay.io/keycloak/keycloak:15.0.2'
+    image: 'quay.io/keycloak/keycloak:18.0.0'
     ports:
       - "8081:8080"
     restart: always
-    command:
-      - '-Dkeycloak.profile.feature.upload_scripts=enabled'
-      - '-Dkeycloak.migration.action=import'
-      - '-Dkeycloak.migration.provider=singleFile'
-      - '-Dkeycloak.migration.file=/tmp/master-realm.json'
-      - '-Dkeycloak.migration.strategy=OVERWRITE_EXISTING'
-    volumes:
-      - type: bind
-        source: './keycloak/master-realm.json'
-        target: '/tmp/master-realm.json'
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
+    command: ["start-dev", "--import-realm"]
+    volumes: 
+        - ./keycloak/sugarfunge-realm.json:/opt/keycloak/data/import/sugarfunge-realm.json 
     environment:
-      PROXY_ADDRESS_FORWARDING: ${PROXY_ADDRESS_FORWARDING}
-      DB_VENDOR: ${DB_VENDOR}
-      DB_ADDR: ${DB_ADDR}
-      DB_DATABASE: ${DB_DATABASE}
-      DB_SCHEMA: ${DB_SCHEMA}
-      DB_USER: ${DB_USER}
-      DB_PASSWORD: ${DB_PASSWORD}
-      KEYCLOAK_USER: ${KEYCLOAK_USER}
-      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      KC_DB: postgres
+      KC_HEALTH_ENABLED: true
+      KC_DB_URL_HOST: ${KC_DB_URL_HOST}
+      KC_DB_URL_DATABASE: ${KC_DB_URL_DATABASE}
+      KC_DB_SCHEMA: ${KC_DB_SCHEMA}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
   graphql-engine:
     image: 'hasura/graphql-engine:v2.6.0.cli-migrations-v3'
     ports:
@@ -91,7 +86,7 @@ services:
     environment:
       WS_URL: ${WS_URL}
   ipfs:
-    image: 'ipfs/go-ipfs:master-2021-11-17-0c2f9d5'
+    image: 'ipfs/go-ipfs:v0.13.0'
     restart: always
     ports:
       - "4001:4001"
