@@ -66,28 +66,3 @@ $ docker-compose down
 # Stop the images and delete the PostgreSQL data
 $ docker-compose down --volumes
 ```
-
-## Environment configuration
-
-- Default environment file: **.env**
-- Example environment file: **.env.example**
-
-| Variable Name               | Description                             |
-| --------------------------- | --------------------------------------- |
-| DATABASE_HOST               | Postgres database host                  |
-| POSTGRES_USER               | Postgres default user                   |
-| POSTGRES_PASSWORD           | Postgres default password               |
-| POSTGRES_DB                 | Postgres default database name          |
-| DB_VENDOR                   | Database management vendor              |
-| DB_ADDR                     | Address of postgres server for Keycloak |
-| DB_DATABASE                 | Keycloak postgres database name         |
-| DB_SCHEMA                   | Keycloak postgres schema name           |
-| DB_USER                     | Keycloak postgres database user         |
-| DB_PASSWORD                 | Keycloak postgres database password     |
-| KEYCLOAK_USER               | Keycloak default username               |
-| KEYCLOAK_PASSWORD           | Keycloak default password               |
-| PORT                        | Port (sf-status)                        |
-| REACT_APP_PROVIDER_SOCKET   | Node WebSocket url (sf-status)          |
-| WS_URL                      | Node WebSocket url (sf-explorer)        |
-| HASURA_GRAPHQL_DATABASE_URL | Postgres database url                   |
-| HASURA_GRAPHQL_ADMIN_SECRET | Hasura admin secret Key                 |
