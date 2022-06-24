@@ -12,7 +12,7 @@ services:
         - "5432:5432"
     volumes: 
         - postgres_data:/var/lib/postgresql/data 
-        - ./docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
+        - ./scripts/docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
   keycloak:
     image: 'quay.io/keycloak/keycloak:18.0.0'
     ports:
@@ -33,40 +33,20 @@ services:
       KC_DB_PASSWORD: ${KC_DB_PASSWORD}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-  graphql-engine:
-    image: 'hasura/graphql-engine:v2.6.0.cli-migrations-v3'
-    ports:
-      - '8080:8080'
-    depends_on:
-      - postgres
-    restart: always
-    volumes:
-      - ./hasura/migrations:/hasura-migrations
-      - ./hasura/metadata:/hasura-metadata
-      - ./hasura/seeds:/hasura-seeds
-    environment:
-      HASURA_GRAPHQL_DATABASE_URL: ${HASURA_GRAPHQL_DATABASE_URL}
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true"
-      HASURA_GRAPHQL_DEV_MODE: "false"
-      HASURA_GRAPHQL_ADMIN_SECRET: ${HASURA_GRAPHQL_ADMIN_SECRET}
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: "startup, http-log, webhook-log, websocket-log, query-log"
-      ACTION_BASE_URL: "http://127.0.0.1:3000"
   sf-node-alice:
     image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
     network_mode: "host"
     command: ["--alice", "--port=30334", "--ws-port", "9944", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
-    # Uncomment to add data persistency
-    # volumes:
-    #   - ./rocksdb/alice:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
+    volumes:
+      - ./rocksdb/alice:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
   sf-node-bob:
     image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
     network_mode: "host"
     command: ["--bob", "--port=30335", "--ws-port", "9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
-    # Uncomment to add data persistency
-    # volumes:
-    #   - ./rocksdb/bob:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
+    volumes:
+      - ./rocksdb/bob:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
   sf-api:
     image: 'sugarfunge.azurecr.io/api:latest'
     restart: always
@@ -94,24 +74,5 @@ services:
       - "5001:5001"
     volumes:
       - ./ipfs:/data/ipfs
-  appsmith:
-    image: index.docker.io/appsmith/appsmith-ce
-    ports:
-      - "7000:80"
-      - "443:443"
-      - "9001:9001"
-    volumes:
-      - ./stacks:/appsmith-stacks
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
-    restart: unless-stopped
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-  auto_update:
-    image: containrrr/watchtower:latest-dev
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --schedule "0 0 * ? * *" --label-enable --cleanup
-    restart: unless-stopped
 volumes:
   postgres_data:

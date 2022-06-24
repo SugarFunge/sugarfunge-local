@@ -1,7 +1,0 @@
-table:
-  schema: sf
-  name: account_profile
-object_relationships:
-  - name: account
-    using:
-      foreign_key_constraint_on: account_id

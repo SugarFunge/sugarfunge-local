@@ -1,7 +1,0 @@
-table:
-  schema: sf
-  name: market_rate
-object_relationships:
-  - name: market
-    using:
-      foreign_key_constraint_on: market_id
