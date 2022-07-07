@@ -36,7 +36,9 @@ docker-compose up -d
 4. [Sugarfunge Explorer](https://github.com/SugarFunge/sugarfunge-explorer): polkadot-js blockchain explorer ([Click here to access](http://localhost:80))
 5. [PostgreSQL](https://www.postgresql.org): Powerful, open source object-relational database system (Accessible at http://localhost:5432) (Tip: Change the port number or remove the port section in the docker-compose file if you already have a postgres instance running to avoid port conflicts)
 6. [Keycloak](https://www.keycloak.org): Open source identity and access management solution ([Click here to access](http://localhost:8081)) (Tip: The username and password is `keycloak`)
-7. [IPFS](https://ipfs.io): Distributed storage ([Click here to access the WebUI](http://localhost:5001/webui)) (API available at http://localhost:8001) 
+7. [IPFS](https://ipfs.io): Distributed storage ([Click here to access the WebUI](http://localhost:5001/webui)) (API available at http://localhost:8001)
+8. [Prometheus](https://prometheus.io): Power your metrics and alerting ([Click here to access](http://localhost:9090))
+9. [Grafana](https://grafana.com/): Operational dashboards for your data here, there, or anywhere ([Click here to access](http://localhost:3000)) (Tip: The username and password is `admin`)
 
 - If you want update or stop the images
 ```bash
