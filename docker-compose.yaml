@@ -14,7 +14,7 @@ services:
         - postgres_data:/var/lib/postgresql/data 
         - ./scripts/docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
   keycloak:
-    image: 'quay.io/keycloak/keycloak:18.0.0'
+    image: 'sugarfunge.azurecr.io/keycloak:latest'
     ports:
       - "8081:8080"
     restart: always
@@ -37,14 +37,14 @@ services:
     image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
     network_mode: "host"
-    command: ["--alice", "--port=30334", "--ws-port", "9944", "--ws-external", "--rpc-external", "--rpc-cors", "all"]
+    command: ["--alice", "--port=30334", "--ws-port=9944", "--prometheus-port=9091", "--ws-external", "--rpc-external", "--prometheus-external", "--rpc-cors", "all"]
     volumes:
       - ./rocksdb/alice:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
   sf-node-bob:
     image: 'sugarfunge.azurecr.io/node:latest'
     restart: always
     network_mode: "host"
-    command: ["--bob", "--port=30335", "--ws-port", "9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
+    command: ["--bob", "--port=30335", "--ws-port=9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
     volumes:
       - ./rocksdb/bob:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
   sf-api:
@@ -74,5 +74,24 @@ services:
       - "5001:5001"
     volumes:
       - ./ipfs:/data/ipfs
+  prometheus:
+    image: 'prom/prometheus:v2.36.2'
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+    ports: 
+        - "9090:9090"
+    volumes:
+      - ./metrics/prometheus.yml:/etc/prometheus/prometheus.yml
+  grafana:
+    image: 'grafana/grafana-oss:9.0.1'
+    restart: always
+    ports: 
+        - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./metrics/grafana/provisioning:/etc/grafana/provisioning
+      - ./metrics/grafana/dashboards:/var/lib/grafana/dashboards
 volumes:
   postgres_data:
+  grafana_data:
