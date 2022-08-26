@@ -66,7 +66,7 @@ services:
     environment:
       WS_URL: ${WS_URL}
   ipfs:
-    image: 'ipfs/go-ipfs:v0.13.0'
+    image: 'ipfs/go-ipfs:v0.14.0'
     restart: always
     ports:
       - "4001:4001"
@@ -75,7 +75,7 @@ services:
     volumes:
       - ./ipfs:/data/ipfs
   prometheus:
-    image: 'prom/prometheus:v2.36.2'
+    image: 'prom/prometheus:v2.38.0'
     extra_hosts:
       - "host.docker.internal:host-gateway"
     restart: always
@@ -84,7 +84,7 @@ services:
     volumes:
       - ./metrics/prometheus.yml:/etc/prometheus/prometheus.yml
   grafana:
-    image: 'grafana/grafana-oss:9.0.1'
+    image: 'grafana/grafana-oss:9.1.1'
     restart: always
     ports: 
         - "3000:3000"
