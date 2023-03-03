@@ -13,4 +13,4 @@ scrape_configs:
   - job_name: "keycloak"
     static_configs:
       - targets: ["keycloak:8080"]
-    metrics_path: "/realms/master/metrics"
+    metrics_path: "/metrics"

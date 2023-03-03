@@ -1,26 +1,4 @@
 {
-  "__inputs": [],
-  "__elements": [],
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.0.1"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "stat",
-      "name": "Stat",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -45,7 +23,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 11784,
   "graphTooltip": 0,
-  "id": null,
+  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -97,7 +75,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": "sf-prometheus",
@@ -157,7 +135,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": "sf-prometheus",
@@ -212,7 +190,7 @@
         },
         "textMode": "auto"
       },
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "targets": [
         {
           "datasource": "sf-prometheus",
@@ -263,7 +241,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "9.0.1",
+      "pluginVersion": "9.4.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -312,7 +290,9 @@
       }
     }
   ],
-  "schemaVersion": 36,
+  "refresh": "",
+  "revision": 1,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -339,6 +319,6 @@
   "timezone": "",
   "title": "SugarFunge Node Dashboard",
   "uid": "PUYzGbwWz",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
