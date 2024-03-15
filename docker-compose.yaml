@@ -1,98 +1,22 @@
 version: '3.6'
 services:
-  postgres:
-    image: postgres:13
-    restart: always
-    environment: 
-        - DATABASE_HOST=${DATABASE_HOST}
-        - POSTGRES_USER=${POSTGRES_USER}
-        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-        - POSTGRES_DB=${POSTGRES_DB} 
-    ports:
-        - "5432:5432"
-    volumes: 
-        - postgres_data:/var/lib/postgresql/data 
-        - ./scripts/docker_postgres_init.sql:/docker-entrypoint-initdb.d/docker_postgres_init.sql
-  keycloak:
-    image: 'quay.io/keycloak/keycloak:21.0.1'
-    ports:
-      - "8081:8080"
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "http://localhost:8080/health"]
-    command: ["start-dev", "--import-realm"]
-    volumes: 
-        - ./keycloak/sugarfunge-realm.json:/opt/keycloak/data/import/sugarfunge-realm.json 
-    environment:
-      KC_DB: "postgres"
-      KC_METRICS_ENABLED: "true"
-      KC_HEALTH_ENABLED: "true"
-      KC_DB_URL_HOST: ${KC_DB_URL_HOST}
-      KC_DB_URL_DATABASE: ${KC_DB_URL_DATABASE}
-      KC_DB_SCHEMA: ${KC_DB_SCHEMA}
-      KC_DB_USERNAME: ${KC_DB_USERNAME}
-      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
-      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
-      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
   sf-node-alice:
-    image: 'sugarfunge.azurecr.io/node:latest'
+    image: 'vaamx/sugarfunge-node:latest'
     restart: always
     network_mode: "host"
-    command: ["--alice", "--port=30334", "--ws-port=9944", "--prometheus-port=9091", "--ws-external", "--rpc-external", "--prometheus-external", "--rpc-cors", "all"]
-    volumes:
-      - ./rocksdb/alice:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
+    command: ["--alice", "--port=30334", "--rpc-port=9944", "--prometheus-port=9091", "--rpc-external", "--prometheus-external", "--rpc-cors", "all"]
+    
   sf-node-bob:
-    image: 'sugarfunge.azurecr.io/node:latest'
+    image: 'vaamx/sugarfunge-node:latest'
     restart: always
     network_mode: "host"
-    command: ["--bob", "--port=30335", "--ws-port=9945", "--ws-external", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
-    volumes:
-      - ./rocksdb/bob:/root/.local/share/sugarfunge-node/chains/local_testnet/db/full
+    command: ["--bob", "--port=30335", "--rpc-port=9945", "--rpc-external", "--rpc-cors", "all", "--bootnodes", "/ip4/127.0.0.1/tcp/30334/p2p/12D3KooWGzN9EZLNkxEVeApishpq8d3pzChPmw9jQ9kra3csTAhk"]
+
   sf-api:
-    image: 'sugarfunge.azurecr.io/api:latest'
+    image: 'vaamx/sugarfunge-api:latest'
     restart: always
     network_mode: 'host'
     command: ["-l", "http://0.0.0.0:4000", "-s", "ws://127.0.0.1:9944"]
-  sf-status:
-    image: 'sugarfunge.azurecr.io/status:latest'
-    restart: always
-    network_mode: 'host'
-    environment:
-        PORT: ${PORT}
-        REACT_APP_PROVIDER_SOCKET: ${REACT_APP_PROVIDER_SOCKET}
-  sf-explorer:
-    image: 'sugarfunge.azurecr.io/explorer:latest'
-    restart: always
-    network_mode: 'host'
-    environment:
-      WS_URL: ${WS_URL}
-  ipfs:
-    image: 'ipfs/kubo:v0.18.1'
-    restart: always
-    ports:
-      - "4001:4001"
-      - "8001:8080"
-      - "5001:5001"
-    volumes:
-      - ./ipfs:/data/ipfs
-  prometheus:
-    image: 'prom/prometheus:v2.42.0'
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    restart: always
-    ports: 
-        - "9090:9090"
-    volumes:
-      - ./metrics/prometheus.yml:/etc/prometheus/prometheus.yml
-  grafana:
-    image: 'grafana/grafana-oss:9.4.3'
-    restart: always
-    ports: 
-        - "3000:3000"
-    volumes:
-      - grafana_data:/var/lib/grafana
-      - ./metrics/grafana/provisioning:/etc/grafana/provisioning
-      - ./metrics/grafana/dashboards:/var/lib/grafana/dashboards
-volumes:
-  postgres_data:
-  grafana_data:
+
+
+
